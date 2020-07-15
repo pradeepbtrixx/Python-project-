@@ -90,46 +90,106 @@ Sample Output :
 '''
 #[ANSWER]
 #POSTFIX EXPRESSION
-import re
-import numpy as np
-d = input('enter some operater and operand : ')
 
-v2 = []
-for i in d:   # Type casting int value from string and added to v2 list
-	if i in ['+','-','*','%','/']:
-		v2.append(i)
-	else:
-		v2.append(int(i))
+try:
+    d = input('[enter  your postfix expression here] : ')
+    k = []
+    for i in d:
+        if i in ['+','-','*']:
+            k.append(i)
+        else:
+            k.append(int(i))
+    stack = []
+    for i in k:
+        if i in ['+','-','*']:
+            if i =='+':
+                stack.append(stack.pop(-2) + stack.pop(-1))
+            elif i == '-':
+                stack.append(stack.pop(-2) - stack.pop(-1))
+            elif i =='*':
+                stack.append(stack.pop(-2) * stack.pop(-1))
+            elif i == '/':
+                stack.append(stack.pop(-2) / stack.pop(-1))
+            else:
+                stack.append(stack.pop(-2) % stack.pop(-1))
 
-try :
-	stack = []
-	for i in v2:
-		if i in ['+','-','*','/']:
-			if i == '+':
-				stack.append(stack.pop(-2) + stack.pop(-1))
-			elif i == '-':
-				stack.append(stack.pop(-2) - stack.pop(-1))
-			elif i == '*':
-				stack.append(stack.pop(-2) * stack.pop(-1))
-			elif i == '/':
-				stack.append(stack.pop(-2) / stack.pop(-1))
-			elif i == '%':
-				stack.append(stack.pop(-2) % stack.pop(-1))
-			else:
-				pass
-		else:
-			stack.append(i)
-	print(stack)
-except:
-	print(-1)
-
+        else:
+            stack.append(i)
+    print(stack[0])
+except :
+    print(-1)
 #----------------------------------------------------------------------------------------------
+#[QUESTION]
+'''
+LYZ company is working with Analyst team to check the most react tweets of people.
+They have been assigned task of finding the most repeated words used by tweeters.
+The task looked simple at the beginning but when they started doing the job 
+they found that their formula is not working for all the tweets. When the number of words
+increases they are unable to find the repeated words. Now they need to 
+design a method with will help them pass the sentence and get the most repeated words
+in the given sentence. 
+
+Point to Note:
+1. An user might type more than one sentence
+2. There might be special tags or characters - which should be ignored
+3. There must be a module which will help the developers re-use the code
+
+Sample Input :
+#Wise wish his #work #get organised. so that I can work in peace #WishMe
+Sample Output :
+is
+'''
+#[ANSWER]
+from difflib import SequenceMatcher 
+import re
+
+class most_tweeted_wordchecker:
+
+	def longestSubstring(str1,str2):  
+	    seqmatch = SequenceMatcher(None,str1,str2)  
+	    match = seqmatch.find_longest_match(0, len(str1), 0, len(str2)) 
+	    if (match.size >= 2): 
+	        return str1[match.a: match.a + match.size]  
+	    else:
+	        False
+
+	def most_tweeted_word(x):
+	    d = x.lower()
+	    a = re.findall(r'[\w]+',d)
+	    data = {}
+	    for i in a:
+	        for j in a:
+	            d = most_tweeted_wordchecker.longestSubstring(i,j)
+	            if d in data:
+	                data[d] += 1
+	            else:
+	                data[d] = 1
+
+	    sort_orders = sorted(data.items(), key=lambda x: x[1], reverse=True)
+	    print()
+	    print()
+	    print(f'THE MOST OCCURED WORD IN THIS TWEET IS : {sort_orders[1][0]}')
+
+def main():
+	while True:
+		va = input('enter your tweet here : ').split(' ')
+		if not va:
+			break
+		elif len(va)<=1:
+			return 'please enter sequence of words'
+			continue
+		else:
+			if va:
+				most_tweeted_wordchecker.most_tweeted_word(str(va))
+				D = input('DO YOU WANT TO CHECK FOR ANOTHER TWEET [Y/N] : ')
+				if D == 'Y':
+					continue
+				else:
+					return'THANK YOU SO MUCH FOR USING THIS CODE '
 
 
+			
+if __name__ == '__main__':
+	print(main())
 
-
-
-
-
-
-
+#=======================================================================================================================
